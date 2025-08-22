@@ -28,6 +28,13 @@ DEBUG = True
 
 #ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['*', '.railway.app']
+#CSRF_TRUSTED_ORIGINS = ['https://vehicle-management-production-769f.up.railway.app']
+# This works for any Railway URL
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://*.railway.app',
+]
 
 # Application definition
 
