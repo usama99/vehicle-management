@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h2>{{ total_trips }}</h2>
+                <p class="mb-0">Total Trips</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h2>{{ pending_payments }}</h2>
+                <p class="mb-0">Pending Payments</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h2>Rs. {{ total_profit|floatformat:0 }}</h2>
+                <p class="mb-0">Total Profit</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h2>Rs. {{ total_receivable|floatformat:0 }}</h2>
+                <p class="mb-0">Total Receivable</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <h3>Quick Actions</h3>
+                <a href="{% url 'add_trip' %}" class="btn btn-primary btn-lg m-2">➕ Add New Trip</a>
+                <a href="{% url 'trip_list' %}" class="btn btn-secondary btn-lg m-2">📋 View All Trips</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3>Recent Trips</h3>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Bilty #</th>
+                            <th>Vehicle</th>
+                            <th>Route</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trip in recent_trips %}
+                        <tr>
+                            <td>{{ trip.bilty_number }}</td>
+                            <td>{{ trip.vehicle_number }}</td>
+                            <td>{{ trip.from_location }} → {{ trip.to_location }}</td>
+                            <td>
+                                {% if trip.payment_status == 'Paid' %}
+                                    <span class="badge bg-success">Paid</span>
+                                {% else %}
+                                    <span class="badge bg-warning">{{ trip.payment_status }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
