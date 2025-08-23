@@ -3,17 +3,6 @@
 import os
 import sys
 
-# ADD THIS BLOCK
-if 'runserver' not in sys.argv and 'migrate' in sys.argv:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
-    import django
-    django.setup()
-    from django.contrib.auth.models import User
-    if User.objects.count() == 0:
-        User.objects.create_superuser('admin', 'admin@test.com', 'Pass123')
-        print('✅ ADMIN CREATED! Username: admin, Password: Pass123')
-# END OF BLOCK
-
 
 def main():
     """Run administrative tasks."""
