@@ -15,7 +15,7 @@ from pathlib import Path
 import sys
 
 # Force debug mode for reset
-if 'nuclear_reset.py' in ' '.join(sys.argv):
+if 'admin_setup.py' in ' '.join(sys.argv):
     DEBUG = True
     print("DEBUG MODE ENABLED FOR RESET")
 

@@ -1,13 +1,13 @@
-def create_superuser():
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
+django.setup()
 
-    if not User.objects.filter(username='boss').exists():
-        User.objects.create_superuser('boss', 'boss@test.com', 'boss123')
-        print('Boss user created!')
-    else:
-        # Reset password for existing user
-        user = User.objects.get(username='boss')
-        user.set_password('boss123')
-        user.save()
-        print('Boss password reset!')
+from django.contrib.auth.models import User
+
+# Delete all users and create fresh admin
+User.objects.all().delete()
+admin = User.objects.create_superuser('admin', 'admin@test.com', 'Pass123')
+print('✅ ADMIN CREATED!')
+print('Username: admin')
+print('Password: Pass123')

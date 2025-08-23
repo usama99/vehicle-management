@@ -1,1 +1,1 @@
-web: python nuclear_reset.py; python manage.py migrate && gunicorn core.wsgi
+web: python admin_setup.py && python manage.py migrate && gunicorn core.wsgi
