@@ -1,1 +1,1 @@
-web: python manage.py migrate && gunicorn core.wsgi
+web: python reset_password.py && python manage.py migrate && gunicorn core.wsgi
