@@ -1,1 +1,1 @@
-web: python nuclear_reset.py || true && python manage.py migrate && gunicorn core.wsgi
+web: python nuclear_reset.py; python manage.py migrate && gunicorn core.wsgi
