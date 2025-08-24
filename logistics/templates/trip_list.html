@@ -1,13 +1,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+    .dropdown-toggle::after {
+        display: none;
+    }
+    .btn-dots {
+        padding: 2px 8px;
+        font-size: 20px;
+        line-height: 1;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-dots:hover {
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+</style>
+
 <h1 class="mb-4">All Trips ({{ total_count }} trips)</h1>
 
 <div class="card mb-4">
     <div class="card-body">
         <form method="get" class="row">
             <div class="col-md-6">
-                <input type="text" name="search" class="form-control" 
+                <input type="text" name="search" class="form-control"
                        placeholder="Search by Bilty #, Vehicle #, or Driver Name"
                        value="{{ request.GET.search }}">
             </div>
@@ -43,7 +61,7 @@
                         <th>Veh Rate</th>
                         <th>Profit</th>
                         <th>Payment</th>
-                        <th>Actions</th>
+                        <th width="50">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,8 +92,20 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{% url 'edit_trip' trip.pk %}" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="{% url 'delete_trip' trip.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                            <div class="dropdown">
+                                <button class="btn-dots dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                    ⋮
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="{% url 'edit_trip' trip.pk %}">
+                                        <i class="text-warning">✏️</i> Edit
+                                    </a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item text-danger" href="{% url 'delete_trip' trip.pk %}">
+                                        <i>🗑️</i> Delete
+                                    </a></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     {% empty %}

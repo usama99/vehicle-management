@@ -85,20 +85,38 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database Configuration
-import os
+# # Database Configuration
+# import os
+#
+# # Check if we're on Railway (production) or local
+# if os.environ.get('DATABASE_URL'):
+#     # Production (Railway/Render)
+#     import dj_database_url
+#     DATABASES = {
+#         'default': dj_database_url.config(
+#             default=os.environ.get('DATABASE_URL')
+#         )
+#     }
+# else:
+#     # Local development
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
-# Check if we're on Railway (production) or local
+#Render
+# Database
 if os.environ.get('DATABASE_URL'):
-    # Production (Railway/Render)
-    import dj_database_url
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL')
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
         )
     }
 else:
-    # Local development
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

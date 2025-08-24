@@ -1,1 +1,1 @@
-web: python admin_setup.py && python manage.py migrate && gunicorn core.wsgi
+web: gunicorn core.wsgi

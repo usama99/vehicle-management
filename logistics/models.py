@@ -2,20 +2,20 @@ from django.db import models
 
 
 class Trip(models.Model):
-    # Basic Info
-    date = models.DateField()
-    bilty_number = models.CharField(max_length=50)
-    vehicle_number = models.CharField(max_length=50)
+    # Basic Info - REQUIRED
+    date = models.DateField()  # Already required
+    bilty_number = models.CharField(max_length=50)  # Already required
+    vehicle_number = models.CharField(max_length=50)  # Already required
 
     # Driver Info
     driver_name = models.CharField(max_length=100)
     driver_mobile = models.CharField(max_length=20)
 
-    # Trip Details
-    from_location = models.CharField(max_length=100)
-    to_location = models.CharField(max_length=100)
+    # Trip Details - REQUIRED
+    from_location = models.CharField(max_length=100)  # Already required
+    to_location = models.CharField(max_length=100)  # Already required
     commodity = models.CharField(max_length=100)
-    weight = models.DecimalField(max_digits=10, decimal_places=2)
+    weight = models.DecimalField(max_digits=10, decimal_places=2)  # Already required
 
     # Party Info
     adda_for_vehicle = models.CharField(max_length=100, blank=True)
@@ -23,13 +23,13 @@ class Trip(models.Model):
     client_name = models.CharField(max_length=100)
     vendor = models.CharField(max_length=100, blank=True)
 
-    # Financial
-    amcs_rate = models.DecimalField(max_digits=10, decimal_places=2)
-    vehicle_rate = models.DecimalField(max_digits=10, decimal_places=2)
-    profit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    adda_commission = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    staff_commission = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    loading_unloading = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    # Financial - ALL REQUIRED (CHANGE THESE)
+    amcs_rate = models.DecimalField(max_digits=10, decimal_places=2)  # Remove blank=True, null=True if present
+    vehicle_rate = models.DecimalField(max_digits=10, decimal_places=2)  # Remove blank=True, null=True
+    profit = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)  # Keep as is (auto-calculated)
+    adda_commission = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
+    staff_commission = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
+    loading_unloading = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
 
     # Payment Info
     fare_type = models.CharField(max_length=20, choices=[
@@ -60,11 +60,11 @@ class Trip(models.Model):
     ], blank=True)
 
     cheque_details = models.CharField(max_length=100, blank=True)
-    advance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    advance = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
     balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
-    receivable = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    payable = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    receivable = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
+    payable = models.DecimalField(max_digits=10, decimal_places=2)  # Remove default=0, make required
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
