@@ -33,14 +33,14 @@ SECRET_KEY = 'django-insecure-msc^yj*d3%n1%gyiqilypa%in!6c7gae3$^wkw0jl$-sa4-@o%
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['*', '.railway.app']
+#ALLOWED_HOSTS = ['*', '.railway.app']
 #CSRF_TRUSTED_ORIGINS = ['https://vehicle-management-production-769f.up.railway.app']
 # This works for any Railway URL
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'https://*.railway.app',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'http://localhost:8000',
+#     'http://127.0.0.1:8000',
+#     'https://*.railway.app',
+# ]
 
 # Application definition
 
@@ -107,22 +107,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 
 #Render
-# Database
-if os.environ.get('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            conn_health_checks=True,
-        )
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# For Supabase
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://postgres:[YOUR-PASSWORD]@db.ecofoeaciaawidulqaql.supabase.co:5432/postgres'
+    )
+}
+
+ALLOWED_HOSTS = ['*', '.vercel.app']
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
 
 # # Database
 # if os.environ.get('DATABASE_URL'):
@@ -172,6 +165,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = []
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
