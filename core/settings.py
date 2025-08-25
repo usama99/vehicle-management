@@ -15,9 +15,12 @@ from pathlib import Path
 import sys
 
 # Force debug mode for reset
-if 'admin_setup.py' in ' '.join(sys.argv):
-    DEBUG = True
-    print("DEBUG MODE ENABLED FOR RESET")
+# if 'admin_setup.py' in ' '.join(sys.argv):
+#     DEBUG = True
+#     print("DEBUG MODE ENABLED FOR RESET")
+
+LOGIN_URL = 'user_login'
+LOGIN_REDIRECT_URL = 'dashboard'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
