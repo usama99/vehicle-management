@@ -103,8 +103,8 @@ def user_logout(request):
 def dashboard(request):
     total_trips = Trip.objects.count()
     pending_payments = Trip.objects.filter(payment_status='Pending').count()
-    total_profit = Trip.objects.aggregate(Sum('profit'))['profit__sum'] or 0
-    total_receivable = Trip.objects.aggregate(Sum('receivable'))['total_receivable__sum'] or 0
+    total_profit = Trip.objects.aggregate(Sum('profit')).get('profit__sum') or 0
+    total_receivable = Trip.objects.aggregate(Sum('receivable')).get('receivable__sum') or 0
     recent_trips = Trip.objects.order_by('-date')[:5]
 
     context = {
