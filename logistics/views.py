@@ -81,7 +81,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from .models import Trip
-from .forms import TripForm
+from .form import TripForm
 
 def user_login(request):
     if request.method == 'POST':
