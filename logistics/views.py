@@ -1,31 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
 from .models import Trip
-from forms import TripForm
+from .form import TripForm
 from django.db.models import Sum, Count
+from datetime import datetime, timedelta
 
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user:
-            login(request, user)
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid credentials')
-    return render(request, 'login.html')
-
-
-def user_logout(request):
-    logout(request)
-    return redirect('user_login')
-
-
-@login_required(login_url='user_login')
 def dashboard(request):
     total_trips = Trip.objects.count()
     pending_payments = Trip.objects.filter(payment_status='Pending').count()
@@ -39,12 +19,10 @@ def dashboard(request):
         'total_profit': total_profit,
         'total_receivable': total_receivable,
         'recent_trips': recent_trips,
-        'is_admin': request.user.is_staff,  # Check if admin
     }
     return render(request, 'dashboard.html', context)
 
 
-@login_required(login_url='user_login')
 def add_trip(request):
     if request.method == 'POST':
         form = TripForm(request.POST)
@@ -57,13 +35,7 @@ def add_trip(request):
     return render(request, 'add_trip.html', {'form': form})
 
 
-@login_required(login_url='user_login')
 def trip_list(request):
-    # Only admin can see all trips
-    if not request.user.is_staff:
-        messages.error(request, 'Access denied')
-        return redirect('dashboard')
-
     trips = Trip.objects.all().order_by('-date')
     search = request.GET.get('search')
     if search:
@@ -82,13 +54,7 @@ def trip_list(request):
     return render(request, 'trip_list.html', context)
 
 
-@login_required(login_url='user_login')
 def edit_trip(request, pk):
-    # Only admin can edit
-    if not request.user.is_staff:
-        messages.error(request, 'Access denied')
-        return redirect('dashboard')
-
     trip = get_object_or_404(Trip, pk=pk)
     if request.method == 'POST':
         form = TripForm(request.POST, instance=trip)
@@ -101,13 +67,7 @@ def edit_trip(request, pk):
     return render(request, 'edit_trip.html', {'form': form, 'trip': trip})
 
 
-@login_required(login_url='user_login')
 def delete_trip(request, pk):
-    # Only admin can delete
-    if not request.user.is_staff:
-        messages.error(request, 'Access denied')
-        return redirect('dashboard')
-
     trip = get_object_or_404(Trip, pk=pk)
     if request.method == 'POST':
         trip.delete()
