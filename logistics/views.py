@@ -82,6 +82,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from .models import Trip
 from .form import TripForm
+import openpyxl
+from django.http import HttpResponse
 
 def user_login(request):
     if request.method == 'POST':
@@ -197,3 +199,56 @@ def delete_trip(request, pk):
         messages.success(request, 'Trip deleted successfully!')
         return redirect('trip_list')
     return render(request, 'delete_trip.html', {'trip': trip})
+
+#File Download
+@login_required(login_url='user_login')
+def export_trips(request):
+    if not request.user.is_staff:
+        return redirect('dashboard')
+
+    trips = Trip.objects.all().order_by('-date')
+
+    search = request.GET.get('search')
+    if search:
+        trips = trips.filter(bilty_number__icontains=search) | \
+                trips.filter(vehicle_number__icontains=search) | \
+                trips.filter(driver_name__icontains=search)
+
+    payment_filter = request.GET.get('payment_status')
+    if payment_filter:
+        trips = trips.filter(payment_status=payment_filter)
+
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
+    if date_from:
+        trips = trips.filter(date__gte=date_from)
+    if date_to:
+        trips = trips.filter(date__lte=date_to)
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Trips"
+
+    ws.append(['Date', 'Bilty #', 'Vehicle #', 'Driver', 'From', 'To',
+               'Client', 'AMCS Rate', 'Veh Rate', 'Profit', 'Payment Status'])
+
+    for trip in trips:
+        ws.append([
+            trip.date.strftime('%d-%b-%Y') if trip.date else '',
+            trip.bilty_number,
+            trip.vehicle_number,
+            trip.driver_name,
+            trip.from_location,
+            trip.to_location,
+            trip.client_name,
+            float(trip.amcs_rate),
+            float(trip.vehicle_rate),
+            float(trip.profit),
+            trip.payment_status,
+        ])
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=trips.xlsx'
+    wb.save(response)
+    return response
+

@@ -22,6 +22,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('add/', views.add_trip, name='add_trip'),
     path('trips/', views.trip_list, name='trip_list'),
+    path('trips/export/', views.export_trips, name='export_trips'), #added for download
     path('edit/<int:pk>/', views.edit_trip, name='edit_trip'),
     path('delete/<int:pk>/', views.delete_trip, name='delete_trip'),
 ]
