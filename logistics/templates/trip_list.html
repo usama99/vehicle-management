@@ -51,7 +51,7 @@
                 <label class="form-label">&nbsp;</label>
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary w-100">Filter</button>
-                    <a href="{% url 'trip_list' %}" class="btn btn-secondary w-100 text-center">Clear</a>
+                    <a href="{% url 'trip_list' %}" class="btn btn-secondary w-100 d-flex align-items-center justify-content-center">Clear</a>
                     <a href="{% url 'export_trips' %}?{{ request.GET.urlencode }}" class="btn btn-success w-100">⬇ Export</a>
                 </div>
             </div>
