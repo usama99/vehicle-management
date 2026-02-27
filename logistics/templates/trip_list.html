@@ -34,9 +34,9 @@
                 <label class="form-label fw-bold">Payment Status</label>
                 <select name="payment_status" class="form-control">
                     <option value="">All</option>
-                    <option value="Pending" {% if request.GET.payment_status =='Pending' %}selected{% endif %}>Pending</option>
-                    <option value="Paid" {% if request.GET.payment_status =='Paid' %}selected{% endif %}>Paid</option>
-                    <option value="Partial" {% if request.GET.payment_status =='Partial' %}selected{% endif %}>Partial</option>
+                    <option value="Pending" {% if request.GET.payment_status == 'Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Paid" {% if request.GET.payment_status == 'Paid' %}selected{% endif %}>Paid</option>
+                    <option value="Partial" {% if request.GET.payment_status == 'Partial' %}selected{% endif %}>Partial</option>
                 </select>
             </div>
             <div class="col-md-2">
