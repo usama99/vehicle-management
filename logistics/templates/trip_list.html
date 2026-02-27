@@ -23,23 +23,35 @@
 
 <div class="card mb-4">
     <div class="card-body">
-        <form method="get" class="row">
-            <div class="col-md-6">
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Search</label>
                 <input type="text" name="search" class="form-control"
-                       placeholder="Search by Bilty #, Vehicle #, or Driver Name"
+                       placeholder="Bilty #, Vehicle #, or Driver Name"
                        value="{{ request.GET.search }}">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <label class="form-label fw-bold">Payment Status</label>
                 <select name="payment_status" class="form-control">
-                    <option value="">All Payment Status</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Paid">Paid</option>
-                    <option value="Partial">Partial</option>
+                    <option value="">All</option>
+                    <option value="Pending" {% if request.GET.payment_status =='Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Paid" {% if request.GET.payment_status =='Paid' %}selected{% endif %}>Paid</option>
+                    <option value="Partial" {% if request.GET.payment_status =='Partial' %}selected{% endif %}>Partial</option>
                 </select>
             </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary">Search</button>
-                <a href="{% url 'trip_list' %}" class="btn btn-secondary">Clear</a>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">From Date</label>
+                <input type="date" name="date_from" class="form-control" value="{{ date_from }}">
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-bold">To Date</label>
+                <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
+            </div>
+            <div class="col-md-2">
+                <div class="d-flex gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{% url 'trip_list' %}" class="btn btn-secondary">Clear</a>
+                </div>
             </div>
         </form>
     </div>
@@ -114,8 +126,18 @@
                     </tr>
                     {% endfor %}
                 </tbody>
+                {% if total_count > 0 %}
+                <tfoot class="table-dark fw-bold">
+                    <tr>
+                        <td colspan="8">Total ({{ total_count }} trips)</td>
+                        <td>Rs. {{ total_profit|floatformat:0 }}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+                {% endif %}
             </table>
         </div>
     </div>
 </div>
+
 {% endblock %}

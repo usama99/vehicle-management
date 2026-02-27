@@ -136,9 +136,21 @@ def trip_list(request):
         return redirect('dashboard')
 
     trips = Trip.objects.all().order_by('-date')
+
+    # Date filtering
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
+
+    if date_from:
+        trips = trips.filter(date__gte=date_from)
+    if date_to:
+        trips = trips.filter(date__lte=date_to)
+
     context = {
         'trips': trips,
         'total_count': trips.count(),
+        'date_from': date_from or '',
+        'date_to': date_to or '',
     }
     return render(request, 'trip_list.html', context)
 
