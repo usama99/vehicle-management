@@ -229,8 +229,16 @@ def export_trips(request):
     ws = wb.active
     ws.title = "Trips"
 
-    ws.append(['Date', 'Bilty #', 'Vehicle #', 'Driver', 'From', 'To',
-               'Client', 'AMCS Rate', 'Veh Rate', 'Profit', 'Payment Status'])
+    ws.append([
+        'Date', 'Bilty #', 'Vehicle #',
+        'Driver Name', 'Driver Mobile',
+        'From', 'To', 'Commodity', 'Weight (Tons)',
+        'Adda for Vehicle', 'Adda for Load', 'Client Name', 'Vendor',
+        'AMCS Rate', 'Vehicle Rate', 'Adda Commission', 'Staff Commission',
+        'Loading/Unloading', 'Receivable', 'Payable', 'Advance', 'Profit',
+        'Payment Status', 'Bill Status', 'POD Status', 'Payment Mode',
+        'Fare Type', 'Cheque Details'
+    ])
 
     for trip in trips:
         ws.append([
@@ -238,13 +246,30 @@ def export_trips(request):
             trip.bilty_number,
             trip.vehicle_number,
             trip.driver_name,
+            trip.driver_mobile,
             trip.from_location,
             trip.to_location,
+            trip.commodity,
+            float(trip.weight),
+            trip.adda_for_vehicle,
+            trip.adda_for_load,
             trip.client_name,
+            trip.vendor,
             float(trip.amcs_rate),
             float(trip.vehicle_rate),
+            float(trip.adda_commission),
+            float(trip.staff_commission),
+            float(trip.loading_unloading),
+            float(trip.receivable),
+            float(trip.payable),
+            float(trip.advance),
             float(trip.profit),
             trip.payment_status,
+            trip.bill_status,
+            trip.pod_status,
+            trip.payment_mode,
+            trip.fare_type,
+            trip.cheque_details,
         ])
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')

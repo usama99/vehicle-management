@@ -48,10 +48,11 @@
                 <input type="date" name="date_to" class="form-control" value="{{ date_to }}">
             </div>
             <div class="col-md-2">
-                <div class="d-flex gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">Filter</button>
-                    <a href="{% url 'trip_list' %}" class="btn btn-secondary">Clear</a>
-                    <a href="{% url 'export_trips' %}?{{ request.GET.urlencode }}" class="btn btn-success">⬇ Export</a>
+                <label class="form-label">&nbsp;</label>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <a href="{% url 'trip_list' %}" class="btn btn-secondary w-100">Clear</a>
+                    <a href="{% url 'export_trips' %}?{{ request.GET.urlencode }}" class="btn btn-success w-100">⬇ Export</a>
                 </div>
             </div>
         </form>
