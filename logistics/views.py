@@ -137,18 +137,32 @@ def trip_list(request):
 
     trips = Trip.objects.all().order_by('-date')
 
-    # Date filtering
+    # Search filter
+    search = request.GET.get('search')
+    if search:
+        trips = trips.filter(bilty_number__icontains=search) | \
+                trips.filter(vehicle_number__icontains=search) | \
+                trips.filter(driver_name__icontains=search)
+
+    # Payment status filter
+    payment_filter = request.GET.get('payment_status')
+    if payment_filter:
+        trips = trips.filter(payment_status=payment_filter)
+
+    # Date filters
     date_from = request.GET.get('date_from')
     date_to = request.GET.get('date_to')
-
     if date_from:
         trips = trips.filter(date__gte=date_from)
     if date_to:
         trips = trips.filter(date__lte=date_to)
 
+    total_profit = trips.aggregate(Sum('profit'))['profit__sum'] or 0
+
     context = {
         'trips': trips,
         'total_count': trips.count(),
+        'total_profit': total_profit,
         'date_from': date_from or '',
         'date_to': date_to or '',
     }
