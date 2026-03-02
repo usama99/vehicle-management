@@ -33,6 +33,6 @@ jobs:
           password: ${{ secrets.EMAIL_PASS }}
           subject: "Vehicle Management - Weekly Backup"
           body: "Please find attached your weekly trip data backup."
-          to: usamaijaz404@gmail.com,Saeedejaz36@yahoo.com
+          to: usamaijaz404@gmail.com,Saeedejaz36@yahoo.com,ameermuavia212@gmail.com
           from: ${{ secrets.EMAIL_USER }}
           attachments: trips_backup.xlsx
